@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { fetchProducts } from '../../../utils/fetchProducts'
-import ProductList from '../../../utils/renderProducts' 
+import { fetchProducts } from '../utils/fetchProducts.js'
+import ProductList from '../components/RenderProducts.jsx'
 
 const HomePage = () => {
   const [products, setProducts] = useState([])
