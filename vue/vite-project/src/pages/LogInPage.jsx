@@ -1,5 +1,7 @@
 import React from 'react'
 import LabelComp from '../components/LabelComp'
+import InputForm from '../components/InputForm'
+
 
 const LogInPage = () => {
   return (
