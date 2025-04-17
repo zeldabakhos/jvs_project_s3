@@ -2,7 +2,7 @@ import {BrowserRouter as Router, Routes, Route} from "react-router-dom"
 
 import CreateProduct from "./pages/CreateProduct";
 import HomePage from "./pages/HomePage";
-import LogInPage from "./pages/LoginPage";
+import LogInPage from "./pages/LogInPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import SignUpPage from "./pages/SignUpPage";
 
