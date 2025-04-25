@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
+import React, { useState } from "react";
+import styled from "styled-components";
+import { useCart } from "../context/CartContext"; // Import the useCart hook
 
 const CardContainer = styled.div`
   perspective: 1000px;
@@ -54,33 +55,45 @@ const Button = styled.button`
   margin-top: 10px;
 `;
 
-const AddToCartButton = styled(Button)`
+const Notification = styled.div`
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
   background-color: #28a745;
   color: white;
-  border: none;
   padding: 10px;
-  cursor: pointer;
   border-radius: 5px;
   font-size: 16px;
-  width: 100%;
-  margin-top: 20px;
+  display: ${({ show }) => (show ? "block" : "none")};
+  transition: opacity 0.5s ease;
 `;
 
-const CardComponent = ({ productName, price, imageUrl, productDescription, onAddToCart }) => {
+const CardComponent = ({ productName, price, imageUrl, productDescription, _id }) => {
   const [flipped, setFlipped] = useState(false);
+  const [showNotification, setShowNotification] = useState(false);
+  const { addToCart } = useCart();
 
   const handleFlip = () => {
     setFlipped(!flipped);
   };
 
   const handleAddToCart = () => {
-    if (onAddToCart) {
-      onAddToCart();
-    }
+    const product = { _id, productName, price, imageUrl, productDescription };
+    addToCart(product);
+
+    // Show the notification
+    setShowNotification(true);
+
+    // Hide the notification after 2 seconds
+    setTimeout(() => {
+      setShowNotification(false);
+    }, 2000);
   };
 
   return (
     <CardContainer>
+      <Notification show={showNotification}>Added to Cart!</Notification> {/* Notification */}
       <CardInner flipped={flipped}>
         <CardFront>
           <CardImage src={imageUrl} alt={productName} />
@@ -97,7 +110,7 @@ const CardComponent = ({ productName, price, imageUrl, productDescription, onAdd
             <p>{productDescription}</p>
             <p><strong>Price:</strong> ${price}</p>
           </div>
-          <AddToCartButton onClick={handleAddToCart}>Add to Cart</AddToCartButton>
+          <Button onClick={handleAddToCart} className="btn btn-success">Add to Cart</Button> {/* Add to Cart button */}
           <Button onClick={handleFlip} className="btn btn-secondary">Back</Button>
         </CardBack>
       </CardInner>
