@@ -13,7 +13,7 @@ const userSchema= new mongoose.Schema({
 
     imageUrl: {
         type: Buffer,
-        required: true
+        required: false,
     },
 
     email: {

@@ -31,23 +31,25 @@ exports.userLogin = async (req, res) => {
 };
 
 exports.userSignUp = async (req, res) => {
-    const { firstName, email, lastName, imageUrl, role } = req.body
-    const hashedPassword = req.hashedPassword
+    const { firstName, email, lastName, role, password } = req.body;
+
     try {
-    const newUser = new User({
-        firstName,
-        email,
-        password: hashedPassword,
-        lastName,
-        imageUrl,
-        role,
-        inventory: [],
-    })
-    const savedUser = await newUser.save()
-    res.status(201).json(savedUser)
-} catch (err) {
-    res.status(400).json({
-        message: err.message
-    })
-}
-}
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        const newUser = new User({
+            firstName,
+            email,
+            password: hashedPassword,
+            lastName,
+            role,
+            inventory: [],
+        });
+
+        const savedUser = await newUser.save();
+        res.status(201).json(savedUser);
+    } catch (err) {
+        res.status(400).json({
+            message: err.message
+        });
+    }
+};
