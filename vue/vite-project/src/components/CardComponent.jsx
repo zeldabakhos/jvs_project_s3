@@ -54,11 +54,29 @@ const Button = styled.button`
   margin-top: 10px;
 `;
 
-const CardComponent = ({ productName, price, imageUrl, productDescription }) => {
+const AddToCartButton = styled(Button)`
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 16px;
+  width: 100%;
+  margin-top: 20px;
+`;
+
+const CardComponent = ({ productName, price, imageUrl, productDescription, onAddToCart }) => {
   const [flipped, setFlipped] = useState(false);
 
   const handleFlip = () => {
     setFlipped(!flipped);
+  };
+
+  const handleAddToCart = () => {
+    if (onAddToCart) {
+      onAddToCart();
+    }
   };
 
   return (
@@ -79,6 +97,7 @@ const CardComponent = ({ productName, price, imageUrl, productDescription }) => 
             <p>{productDescription}</p>
             <p><strong>Price:</strong> ${price}</p>
           </div>
+          <AddToCartButton onClick={handleAddToCart}>Add to Cart</AddToCartButton>
           <Button onClick={handleFlip} className="btn btn-secondary">Back</Button>
         </CardBack>
       </CardInner>
