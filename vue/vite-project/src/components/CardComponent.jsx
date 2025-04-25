@@ -1,33 +1,89 @@
-import productsImg from "../assets/image.jpeg"
+import React, { useState } from 'react';
+import styled from 'styled-components';
 
-const CardComponent = ({productName, description, price, imageUrl}) => {
-    const {test} = props
-    console.log(test)
+const CardContainer = styled.div`
+  perspective: 1000px;
+  width: 300px;
+  height: 400px;
+  margin: 1rem;
+`;
 
-    return (
-        <article class="col">
-            <div class="card shadow-sm">
-                <img 
-                    src={imageUrl|| productsImg}
-                    className="card-img-top"
-                    alt={title}
-                    />
+const CardInner = styled.div`
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+  transform: ${props => (props.flipped ? 'rotateY(180deg)' : 'none')};
+`;
 
-                    <div class="card-body">
-                        <h5 className="card-title">{productName}</h5>
-                        <p class="card-text">{description}</p>
-                        <p class="card-text">{price}</p>
-                        <p class="card-text">{imageUrl}</p>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div class="">
-                                    <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </article>
-        );
-    };
+const CardFace = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  overflow: hidden;
+  background: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+`;
 
+const CardFront = styled(CardFace)`
+  z-index: 2;
+`;
+
+const CardBack = styled(CardFace)`
+  transform: rotateY(180deg);
+  padding: 1rem;
+`;
+
+const CardImage = styled.img`
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+`;
+
+const CardBody = styled.div`
+  padding: 1rem;
+`;
+
+const Button = styled.button`
+  margin-top: 10px;
+`;
+
+const CardComponent = ({ productName, price, imageUrl, productDescription }) => {
+  const [flipped, setFlipped] = useState(false);
+
+  const handleFlip = () => {
+    setFlipped(!flipped);
+  };
+
+  return (
+    <CardContainer>
+      <CardInner flipped={flipped}>
+        <CardFront>
+          <CardImage src={imageUrl} alt={productName} />
+          <CardBody>
+            <h5>{productName}</h5>
+            <p>${price}</p>
+            <Button onClick={handleFlip} className="btn btn-primary">View</Button>
+          </CardBody>
+        </CardFront>
+
+        <CardBack>
+          <div>
+            <h5>{productName}</h5>
+            <p>{productDescription}</p>
+            <p><strong>Price:</strong> ${price}</p>
+          </div>
+          <Button onClick={handleFlip} className="btn btn-secondary">Back</Button>
+        </CardBack>
+      </CardInner>
+    </CardContainer>
+  );
+};
 
 export default CardComponent;

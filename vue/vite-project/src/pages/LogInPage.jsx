@@ -1,31 +1,41 @@
 import React, { useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
 import LabelComp from '../components/LabelComp';
 import InputForm from '../components/InputForm';
-import { checkEmail } from '../utils/checkFormErrors';
 import AlertComp from '../components/AlertComp';
+import { checkEmail } from '../utils/checkFormErrors';
 
 const LogInPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
-  const handleEmailChange = (changedValue) => {
-    setEmail(changedValue);
-  };
+  const handleEmailChange = (val) => setEmail(val);
+  const handlePasswordChange = (val) => setPassword(val);
 
-  const handlePasswordChange = (changedPassword) => {
-    setPassword(changedPassword);
-  };
-
-  const handleSubmit = (event) => {
-    event.preventDefault(); 
-
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     try {
       if (!checkEmail.checkEmpty(email)) throw Error("This is empty!");
       if (!checkEmail.checkFormat(email)) throw Error("Email bad !!!");
-    } catch (error) {
-      console.error("Invalid email format");
-      setError("Invalid email format: " + error.message);
+
+      const response = await fetch("http://localhost:3000/api/users/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      if (response.status === 401) throw Error("Invalid credentials!");
+
+      const token = await response.json();
+      localStorage.setItem("token", token);
+      navigate("/products"); 
+    } catch (err) {
+      setError(err.message);
     }
   };
 
@@ -38,36 +48,37 @@ const LogInPage = () => {
       <h1 className="text-center">Log In</h1>
 
       <div className="mb-3">
-        <LabelComp htmlFor="emailInput" displayText="Enter your email here!" />
+        <LabelComp htmlFor="emailInput" displayText="Email" />
         <InputForm
           onChange={handleEmailChange}
           value={email}
           type="email"
           id="emailInput"
-          ariaDescribe="emailHelp"
         />
       </div>
 
-      <div id="emailHelp" className="form-text">
-        We'll never share your email with anyone else.
-      </div>
-
       <div className="mb-3">
-        <LabelComp htmlFor="passwordInput" displayText="Enter your password here!" />
+        <LabelComp htmlFor="passwordInput" displayText="Password" />
         <InputForm
           onChange={handlePasswordChange}
           value={password}
           type="password"
           id="passwordInput"
-          ariaDescribe="passwordHelp"
         />
       </div>
 
-        {error && <AlertComp alertType="alert-danger" text = {error}/>}
+      {error && <AlertComp alertType="alert-danger" text={error} />}
 
-    <button type="submit" className="btn btn-primary w-100">
+      <button type="submit" className="btn btn-primary w-100">
         Log In
-    </button>
+      </button>
+
+      <div className="text-center mt-3">
+        <span>Don't have an account? </span>
+        <Link to="/signup" style={{ textDecoration: "underline", color: "#007bff" }}>
+          Create one
+        </Link>
+      </div>
     </form>
   );
 };
