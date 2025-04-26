@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { fetchProducts } from '../utils/fetchProducts.js';
 import CardComponent from '../components/CardComponent.jsx';
 import { Link } from 'react-router-dom';
+import './ProductPage.css';
 
 const ProductPage = () => {
   const [products, setProducts] = useState([]);
@@ -11,12 +12,11 @@ const ProductPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const isLoggedIn = localStorage.getItem("token");
-    if (!isLoggedIn) {
-      navigate("/login");
+    const token = localStorage.getItem("token");
+    if (!token) {
+      navigate("/login"); // Redirect if not logged in
     }
-
-    const loadProducts = async () => {
+      const loadProducts = async () => {
       try {
         const data = await fetchProducts();
         if (data) {
@@ -60,32 +60,28 @@ const ProductPage = () => {
   if (!products || products.length === 0) return <p>No products found</p>;
 
   return (
-    <div>
-      {/* Create Product Button */}
-      <div className="col-12">
-        <Link to="/createproduct" className="btn btn-primary mb-3">
-          Create Product
-        </Link>
+    <div className="page-container">
+  <div className="col-12">
+    <Link to="/createproduct" className="create-button">
+      Create Product
+    </Link>
+  </div>
+
+  <section className="products-grid">
+    {products.map((product) => (
+      <div key={product._id} className="card">
+        <CardComponent
+          productName={product.productName}
+          productDescription={product.productDescription}
+          price={product.price}
+          imageUrl={product.imageUrl}
+          _id={product._id}
+        />
       </div>
-
-      {/* Display Products */}
-      <section className="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-        {products.map((product) => (
-          <div key={product._id} className="col">
-            <CardComponent
-              productName={product.productName}
-              productDescription={product.productDescription}
-              price={product.price}
-              imageUrl={product.imageUrl}
-              _id={product._id} 
-              />
-
-          </div>
-        ))}
-      </section>
-    </div>
+    ))}
+  </section>
+</div>
   );
 };
 
 export default ProductPage;
-

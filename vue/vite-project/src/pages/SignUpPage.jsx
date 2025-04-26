@@ -8,7 +8,6 @@ const fieldConfig = [
   { name: "lastName", label: "Last Name", type: "text", id: "inputLastName" },
   { name: "email", label: "Email", type: "email", id: "inputEmail" },
   { name: "password", label: "Password", type: "password", id: "inputPassword" },
-  { name: "role", label: "Role", type: "text", id: "inputRole" }
 ];
 
 const SignUpPage = () => {
@@ -17,7 +16,6 @@ const SignUpPage = () => {
     lastName: "",
     email: "",
     password: "",
-    role: ""
   });
 
   const handleChange = (field) => (value) =>

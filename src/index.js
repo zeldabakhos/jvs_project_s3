@@ -16,13 +16,19 @@ app.use(express.json())
 //     next();
 // });
 app.use((req, res, next) => {
-    res.header("Access-Control-Allow-Origin", "*")
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS"); // Allow methods explicitly
     res.header(
-     "Access-Control-Allow-Headers",
-     "Origin, X-Requested-With, Content-Type, Accept, Authorization"
-    )
-    next()
-   })
+        "Access-Control-Allow-Headers",
+        "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+    );
+    // If the request method is OPTIONS, respond with 200 status
+    if (req.method === "OPTIONS") {
+        return res.status(200).end();
+    }
+    next();
+});
+
 // ROUTES
 app.use("/api/users", userRoutes)
 app.use("/api/products", productRoutes)

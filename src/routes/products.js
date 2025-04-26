@@ -1,14 +1,16 @@
 const express = require("express");
 const router = express.Router();
-const { getProduct, getProductById, addProduct } = require("../controllers/productControllers");
-const { verifyAdmin } = require("../middleware/auth");
+const { getProduct, getProductById, addProduct, deleteProduct } = require("../controllers/productControllers");
 const upload = require("../middleware/multerConfig");
 const sharpMiddleware = require("../middleware/sharpMiddleware");
 
-router.get('/seeProduct', getProduct);
-router.get('/seeProductId/:_id', getProductById); // ✅ Add this line
 
-router.post('/addProduct', verifyAdmin, upload.single("image"), sharpMiddleware(), addProduct, (req, res) => {
+router.get('/seeProduct', getProduct);
+router.get('/seeProductId/:_id', getProductById);
+
+router.delete('/deleteProduct/:_id', deleteProduct);
+
+router.post('/addProduct', upload.single("image"), sharpMiddleware(), addProduct, (req, res) => {
     if (!req.file) {
         return res.status(400).json({ error: "Error uploading the file. Wrong format?" });
     }
@@ -18,3 +20,4 @@ router.post('/addProduct', verifyAdmin, upload.single("image"), sharpMiddleware(
 });
 
 module.exports = router;
+

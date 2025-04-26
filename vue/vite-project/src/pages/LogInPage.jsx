@@ -19,7 +19,7 @@ const LogInPage = () => {
     try {
       if (!checkEmail.checkEmpty(email)) throw Error("This is empty!");
       if (!checkEmail.checkFormat(email)) throw Error("Email bad !!!");
-
+  
       const response = await fetch("http://localhost:3000/api/users/login", {
         method: "POST",
         headers: {
@@ -28,16 +28,21 @@ const LogInPage = () => {
         },
         body: JSON.stringify({ email, password }),
       });
-
+  
       if (response.status === 401) throw Error("Invalid credentials!");
-
-      const token = await response.json();
-      localStorage.setItem("token", token);
-      navigate("/products"); 
+  
+      // The response body is now directly the token string
+      const token = await response.text();  // Use `text()` to get the token as a string
+  
+      // If you successfully receive the token, store it in localStorage
+      localStorage.setItem("token", token); 
+      navigate("/products");  // Redirect to products page
     } catch (err) {
       setError(err.message);
     }
   };
+  
+  
 
   return (
     <form
