@@ -1,7 +1,9 @@
-import React, { useState } from "react";
-import styled from "styled-components";
-import { useCart } from "../context/CartContext"; // Import the useCart hook
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import { useCart } from '../context/CartContext'; // Assuming CartContext is in the context folder
+import { useDelete } from '../context/ProductContext';
 
+// Styled-components for the card layout
 const CardContainer = styled.div`
   perspective: 1000px;
   width: 300px;
@@ -55,63 +57,82 @@ const Button = styled.button`
   margin-top: 10px;
 `;
 
-const Notification = styled.div`
-  position: absolute;
-  top: 10px;
-  left: 50%;
-  transform: translateX(-50%);
-  background-color: #28a745;
-  color: white;
-  padding: 10px;
-  border-radius: 5px;
-  font-size: 16px;
-  display: ${({ show }) => (show ? "block" : "none")};
-  transition: opacity 0.5s ease;
-`;
-
-const CardComponent = ({ productName, price, imageUrl, productDescription, _id }) => {
+// Card Component
+const CardComponent = ({ _id, productName, price, imageUrl, productDescription, onDelete }) => {
   const [flipped, setFlipped] = useState(false);
-  const [showNotification, setShowNotification] = useState(false);
-  const { addToCart } = useCart();
-
+  const [showNotification, setNotification] = useState(false);
+  const { addToCart } = useCart(); // Getting addToCart function from context
+  const { deleteProduct } = useDelete();
+  // Flip the card
   const handleFlip = () => {
     setFlipped(!flipped);
   };
 
+  // Add product to cart and show notification
   const handleAddToCart = () => {
-    const product = { _id, productName, price, imageUrl, productDescription };
-    addToCart(product);
+    const product = { productName, price, imageUrl, productDescription };
+    addToCart(product); // Adds product to the cart context
+    setNotification(true);
+    setTimeout(() => setNotification(false), 2000); // Hide notification after 2 seconds
+  };
 
-    // Show the notification
-    setShowNotification(true);
-
-    // Hide the notification after 2 seconds
-    setTimeout(() => {
-      setShowNotification(false);
-    }, 2000);
+  const handleDeleteClick = () => {
+    if (deleteProduct) {
+      deleteProduct(_id); 
+    }
   };
 
   return (
     <CardContainer>
-      <Notification show={showNotification}>Added to Cart!</Notification> {/* Notification */}
+      {/* Notification for adding to cart */}
+      <div
+        style={{
+          position: 'absolute',
+          top: 10,
+          left: '50%',
+          transform: 'translateX(-50%)',
+          backgroundColor: '#28a745',
+          color: 'white',
+          padding: '10px',
+          borderRadius: '5px',
+          fontSize: '16px',
+          display: showNotification ? 'block' : 'none',
+        }}
+      >
+        Added to Cart!
+      </div>
+
       <CardInner flipped={flipped}>
+        {/* Front of the card */}
         <CardFront>
           <CardImage src={imageUrl} alt={productName} />
           <CardBody>
             <h5>{productName}</h5>
             <p>${price}</p>
-            <Button onClick={handleFlip} className="btn btn-primary">View</Button>
+            <Button onClick={handleFlip}>View</Button>
           </CardBody>
         </CardFront>
 
+        {/* Back of the card */}
         <CardBack>
           <div>
             <h5>{productName}</h5>
             <p>{productDescription}</p>
-            <p><strong>Price:</strong> ${price}</p>
+            <p>
+              <strong>Price:</strong> ${price}
+            </p>
           </div>
-          <Button onClick={handleAddToCart} className="btn btn-success">Add to Cart</Button> {/* Add to Cart button */}
-          <Button onClick={handleFlip} className="btn btn-secondary">Back</Button>
+          <div>
+            <Button onClick={handleAddToCart} className="btn btn-success">
+              Add to Cart
+            </Button>
+            <Button onClick={handleDeleteClick} className="btn btn-danger">
+              Delete
+            </Button>
+            <Button onClick={handleFlip} className="btn btn-secondary">
+              Back
+            </Button>
+          </div>
         </CardBack>
       </CardInner>
     </CardContainer>

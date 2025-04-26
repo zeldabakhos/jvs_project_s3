@@ -41,7 +41,7 @@ const Notification = styled.div`
 `;
 
 const CartPage = () => {
-  const { cartItems, increaseQuantity, decreaseQuantity, updateQuantity, notification } =
+  const { cartItems, increaseQuantity, decreaseQuantity, updateQuantity, notification, clearCart } =
     useCart();
 
   const handleIncrease = (_id, price) => {
@@ -57,6 +57,11 @@ const CartPage = () => {
   };
 
   const totalPrice = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
+
+  const handlePayment = () => {
+    clearCart(); // Clear the cart when Pay button is clicked
+    alert("Payment successful! Your cart is now empty.");
+  };
 
   return (
     <div>
@@ -86,6 +91,11 @@ const CartPage = () => {
       )}
 
       <h3>Total: ${totalPrice}</h3>
+
+      {/* Pay Button */}
+      <button onClick={handlePayment} disabled={cartItems.length === 0}>
+        Pay
+      </button>
     </div>
   );
 };

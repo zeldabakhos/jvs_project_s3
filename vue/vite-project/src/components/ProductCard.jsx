@@ -1,6 +1,13 @@
 import React from 'react';
 
-const ProductCard = ({ product, addToCart }) => {
+const ProductCard = ({ product, addToCart, onDelete }) => {
+  const handleDelete = async () => {
+    const confirmed = window.confirm("Are you sure you want to delete this product?");
+    if (confirmed) {
+      onDelete(product.id); // Call the delete function passed down as a prop
+    }
+  };
+
   return (
     <article className="col">
       <div className="card shadow-sm">
@@ -10,9 +17,15 @@ const ProductCard = ({ product, addToCart }) => {
           <p className="card-text">Price: ${product.price}</p>
           <button
             className="btn btn-primary"
-            onClick={() => addToCart(product.id)}
+            onClick={() => addToCart(product.id)} // Add to cart functionality
           >
             Add to Cart
+          </button>
+          <button
+            className="btn btn-danger"
+            onClick={handleDelete} // Delete functionality
+          >
+            Delete
           </button>
         </div>
       </div>
