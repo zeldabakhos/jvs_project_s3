@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { FaHome, FaShoppingCart, FaSignInAlt, FaUserPlus, FaSignOutAlt, FaBook } from 'react-icons/fa'; 
 import './NavBar.css';
 
 const NavBar = ({ isLoggedIn, setIsLoggedIn }) => {
@@ -12,7 +13,7 @@ const NavBar = ({ isLoggedIn, setIsLoggedIn }) => {
 
   const handleLogout = () => {
     localStorage.removeItem('token');
-    setIsLoggedIn(false);  // Update the state in App.js to reflect the logout
+    setIsLoggedIn(false);  
     navigate('/login');
   };
 
@@ -24,23 +25,42 @@ const NavBar = ({ isLoggedIn, setIsLoggedIn }) => {
 
         {/* Menu */}
         <ul className={`navbar-menu ${isMenuOpen ? 'active' : ''}`}>
-          <li><Link to="/" className="navbar-item">Home</Link></li>
-          
-          {/* Conditionally render based on isLoggedIn */}
+          <li>
+            <Link to="/" className="navbar-item">
+              <FaHome style={{ marginRight: '5px' }} /> Home
+            </Link>
+          </li>
+
           {isLoggedIn ? (
             <>
-              <li><Link to="/products" className="navbar-item">Products</Link></li>
-              <li><Link to="/cart" className="navbar-item">Cart</Link></li>
+              <li>
+                <Link to="/products" className="navbar-item">
+                  <FaBook style={{ marginRight: '5px' }} /> Products
+                </Link>
+              </li>
+              <li>
+                <Link to="/cart" className="navbar-item">
+                  <FaShoppingCart style={{ marginRight: '5px' }} /> Cart
+                </Link>
+              </li>
               <li>
                 <button onClick={handleLogout} className="navbar-item btn btn-link" style={{ padding: 0 }}>
-                  Logout
+                  <FaSignOutAlt style={{ marginRight: '5px' }} /> Logout
                 </button>
               </li>
             </>
           ) : (
             <>
-              <li><Link to="/login" className="navbar-item">Login</Link></li>
-              <li><Link to="/signup" className="navbar-item">Sign Up</Link></li>
+              <li>
+                <Link to="/login" className="navbar-item">
+                  <FaSignInAlt style={{ marginRight: '5px' }} /> Login
+                </Link>
+              </li>
+              <li>
+                <Link to="/signup" className="navbar-item">
+                  <FaUserPlus style={{ marginRight: '5px' }} /> Sign Up
+                </Link>
+              </li>
             </>
           )}
         </ul>
