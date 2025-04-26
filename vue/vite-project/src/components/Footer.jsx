@@ -1,8 +1,14 @@
 import React from 'react';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Footer = () => {
-  const isLoggedIn = localStorage.getItem("token");  // Check if user is logged in (you can also use state/context)
+  const isLoggedIn = localStorage.getItem("token");
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate('/login');
+  };
 
   return (
     <footer className="py-3 bg-light mt-auto">
@@ -27,19 +33,16 @@ const Footer = () => {
               </Link>
             </li>
           </>
-        ) : (
-          <li className="nav-item">
-            <button
-              onClick={() => {
-                localStorage.removeItem("token");
-                window.location.reload();  // Optional: Reload page to update the UI after logout
-              }}
-              className="nav-link px-2 btn btn-link"
-            >
-              Logout
-            </button>
-          </li>
-        )}
+        ) : null}
+        <li className="nav-item">
+          <button
+            onClick={handleLogout}
+            className="nav-link px-2 btn btn-link"
+            style={{ padding: 0 }}
+          >
+            Logout
+          </button>
+        </li>
       </ul>
     </footer>
   );
