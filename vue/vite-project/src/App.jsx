@@ -11,6 +11,7 @@ import CartPage from './pages/CartPage';
 import NotFoundPage from "./pages/NotFoundPage";
 import CreateProduct from "./pages/CreateProductPage";
 import PrivateRoute from "./components/PrivateRoute";
+import EditProductPage from './pages/EditProductPage';
 import { useState, useEffect } from "react";
 
 const App = () => {
@@ -35,6 +36,7 @@ const App = () => {
               <Route path="/login" element={<LogInPage setIsLoggedIn={setIsLoggedIn} />} />
               <Route path="/signup" element={<SignUpPage />} />
               <Route path="/cart" element={<CartPage />} />
+              <Route path="/editproduct/:id" element={<EditProductPage />} />
               <Route path="/products" element={<PrivateRoute><ProductPage /></PrivateRoute>} />
               <Route path="/createproduct" element={<PrivateRoute><CreateProduct /></PrivateRoute>} />
               <Route path="*" element={<NotFoundPage />} />

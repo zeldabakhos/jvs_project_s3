@@ -125,3 +125,13 @@ h1, h2, h3, h4, h5 {
   border-radius: 10px;
   margin-bottom: 1rem;
 }
+
+.login-page-container {
+  min-height: 100vh; /* full page height */
+  display: flex;
+  align-items: center; /* vertical center */
+  justify-content: center; /* horizontal center */
+  padding-top: 80px; /* add padding if your navbar is fixed */
+  padding-bottom: 40px; /* for the footer breathing room */
+  box-sizing: border-box;
+}

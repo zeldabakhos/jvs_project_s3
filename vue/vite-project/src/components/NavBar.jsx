@@ -21,7 +21,7 @@ const NavBar = ({ isLoggedIn, setIsLoggedIn }) => {
     <nav className="navbar">
       <div className="navbar-container">
         {/* Logo */}
-        <Link to="/" className="navbar-logo">My Bookstore</Link>
+        <Link to="/" className="navbar-logo">Fiction Addicts</Link>
 
         {/* Menu */}
         <ul className={`navbar-menu ${isMenuOpen ? 'active' : ''}`}>

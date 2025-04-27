@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { getProduct, getProductById, addProduct, deleteProduct } = require("../controllers/productControllers");
+const { getProduct, getProductById, addProduct, deleteProduct, updateProduct } = require("../controllers/productControllers");
 const upload = require("../middleware/multerConfig");
 const sharpMiddleware = require("../middleware/sharpMiddleware");
 
@@ -18,6 +18,8 @@ router.post('/addProduct', upload.single("image"), sharpMiddleware(), addProduct
     const fileUrl = req.protocol + "://" + req.get("host") + "/" + req.file.processedPath;
     res.json({ message: "User response reached", fileUrl });
 });
+
+router.put('/updateProduct/:_id', updateProduct);
 
 module.exports = router;
 

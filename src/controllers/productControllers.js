@@ -57,3 +57,31 @@ exports.deleteProduct = async (req, res) => {
         res.status(500).json({ message: err.message });
     }
 };
+
+exports.updateProduct = async (req, res) => {
+    const { _id } = req.params;
+    const { productName, productDescription, brand, imageUrl, model, stock, price } = req.body;
+    try {
+        const updatedProduct = await Product.findByIdAndUpdate(
+            _id,
+            {
+                productName,
+                productDescription,
+                brand,
+                imageUrl,
+                model,
+                stock,
+                price
+            },
+            { new: true } // Return the updated product
+        );
+
+        if (!updatedProduct) {
+            return res.status(404).json({ message: "Product not found" });
+        }
+
+        res.status(200).json(updatedProduct);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+};

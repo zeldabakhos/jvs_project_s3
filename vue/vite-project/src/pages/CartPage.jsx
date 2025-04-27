@@ -2,29 +2,123 @@ import React from "react";
 import { useCart } from "../context/CartContext";
 import styled from "styled-components";
 
-// Styled-components for cart item layout
+// Styled-components for cart page
+
+const CartContainer = styled.div`
+  max-width: 900px;
+  margin: 4rem auto;
+  padding: 2rem;
+  background: #fff;
+  border-radius: 15px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+`;
+
+const CartHeader = styled.h2`
+  font-size: 2rem;
+  color: #5d3a00;
+  text-align: center;
+  margin-bottom: 2rem;
+`;
+
 const CartItem = styled.div`
   display: flex;
   align-items: center;
-  margin-bottom: 1rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid #eee;
 `;
 
 const CartItemImage = styled.img`
-  margin-right: 1rem;
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  margin-right: 1.5rem;
+  border-radius: 10px;
 `;
 
 const CartItemInfo = styled.div`
   flex-grow: 1;
 `;
 
+const CartItemName = styled.h4`
+  font-size: 1.2rem;
+  color: #5d3a00;
+  margin-bottom: 0.5rem;
+`;
+
+const CartItemPrice = styled.p`
+  color: #8b5e3c;
+  margin-bottom: 0.5rem;
+`;
+
+const QuantityControl = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.5rem;
+
+  span {
+    margin: 0 10px;
+    font-size: 1.1rem;
+  }
+`;
+
 const CartItemButton = styled.button`
-  margin: 0 5px;
-  padding: 5px 10px;
+  background-color: #8b5e3c;
+  color: #fff;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 8px;
   cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 
   &:hover {
-    background-color: #f0f0f0;
+    background-color: #a9745a;
+    transform: translateY(-2px);
   }
+`;
+
+const RemoveButton = styled(CartItemButton)`
+  background-color: #c04a4a;
+  margin-top: 0.5rem;
+
+  &:hover {
+    background-color: #e25d5d;
+  }
+`;
+
+const TotalPrice = styled.h3`
+  text-align: right;
+  margin-top: 2rem;
+  color: #5d3a00;
+`;
+
+const PayButton = styled.button`
+  display: block;
+  margin: 2rem auto 0;
+  background-color: #8b5e3c;
+  color: #fff;
+  padding: 1rem 2rem;
+  border: none;
+  border-radius: 10px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+
+  &:hover {
+    background-color: #a9745a;
+    transform: translateY(-2px);
+  }
+
+  &:disabled {
+    background-color: #c4b7a6;
+    cursor: not-allowed;
+  }
+`;
+
+const EmptyCart = styled.p`
+  text-align: center;
+  font-size: 1.2rem;
+  color: #8b5e3c;
 `;
 
 const Notification = styled.div`
@@ -53,50 +147,52 @@ const CartPage = () => {
   };
 
   const handleRemove = (_id, price) => {
-    updateQuantity(_id, price, 0);  // Set quantity to 0 to remove the item
+    updateQuantity(_id, price, 0);
   };
 
   const totalPrice = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
 
   const handlePayment = () => {
-    clearCart(); // Clear the cart when Pay button is clicked
+    clearCart();
     alert("Payment successful! Your cart is now empty.");
   };
 
   return (
-    <div>
-      {notification && <Notification>{notification}</Notification>} {/* Show notification */}
+    <CartContainer>
+      {notification && <Notification>{notification}</Notification>}
 
-      <h2>Your Cart</h2>
+      <CartHeader>Your Cart</CartHeader>
+
       {cartItems.length === 0 ? (
-        <p>Your cart is empty!</p>
+        <EmptyCart>Your cart is empty!</EmptyCart>
       ) : (
         cartItems.map((item) => (
           <CartItem key={item._id + item.price}>
-            <CartItemImage src={item.imageUrl} alt={item.productName} width="100" />
+            <CartItemImage src={item.imageUrl} alt={item.productName} />
             <CartItemInfo>
-              <h4>{item.productName}</h4>
-              <p>${item.price}</p>
+              <CartItemName>{item.productName}</CartItemName>
+              <CartItemPrice>${item.price}</CartItemPrice>
 
-              <div>
+              <QuantityControl>
                 <CartItemButton onClick={() => handleDecrease(item._id, item.price)}>-</CartItemButton>
                 <span>{item.quantity}</span>
                 <CartItemButton onClick={() => handleIncrease(item._id, item.price)}>+</CartItemButton>
-              </div>
+              </QuantityControl>
 
-              <CartItemButton onClick={() => handleRemove(item._id, item.price)}>Remove</CartItemButton>
+              <RemoveButton onClick={() => handleRemove(item._id, item.price)}>
+                Remove
+              </RemoveButton>
             </CartItemInfo>
           </CartItem>
         ))
       )}
 
-      <h3>Total: ${totalPrice}</h3>
+      <TotalPrice>Total: ${totalPrice.toFixed(2)}</TotalPrice>
 
-      {/* Pay Button */}
-      <button onClick={handlePayment} disabled={cartItems.length === 0}>
+      <PayButton onClick={handlePayment} disabled={cartItems.length === 0}>
         Pay
-      </button>
-    </div>
+      </PayButton>
+    </CartContainer>
   );
 };
 
