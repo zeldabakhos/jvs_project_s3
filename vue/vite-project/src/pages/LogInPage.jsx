@@ -13,11 +13,19 @@ const LogInPage = ({setIsLoggedIn}) => {
 
   const handleEmailChange = (val) => setEmail(val);
   const handlePasswordChange = (val) => setPassword(val);
+  localStorage.removeItem("token");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    localStorage.setItem("token", "this is my token")
-    setIsLoggedIn(true)
+  
+    // Remove the token before login attempt
+    localStorage.removeItem("token");
+  
+    // Log to check if the token is removed
+    console.log("Token after removal: ", localStorage.getItem("token")); // Should be null or undefined
+    
+    setIsLoggedIn(false);
+  
     try {
       if (!checkEmail.checkEmpty(email)) throw Error("This is empty!");
       if (!checkEmail.checkFormat(email)) throw Error("Email bad !!!");
@@ -34,15 +42,19 @@ const LogInPage = ({setIsLoggedIn}) => {
       if (response.status === 401) throw Error("Invalid credentials!");
   
       // The response body is now directly the token string
-      const token = await response.text();  // Use `text()` to get the token as a string
+      const token = await response.text();
   
       // If you successfully receive the token, store it in localStorage
       localStorage.setItem("token", token); 
-      navigate("/products");  // Redirect to products page
+      setIsLoggedIn(true);
+  
+      navigate("/products");
     } catch (err) {
       setError(err.message);
     }
   };
+  
+  
   
   
 
