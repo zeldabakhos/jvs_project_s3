@@ -4,7 +4,7 @@ import { ProductProvider } from './context/ProductContext';
 import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
 import HomePage from "./pages/HomePage"; 
-import LogInPage from "./pages/LoginPage";
+import LogInPage from "./pages/LogInPage";
 import SignUpPage from "./pages/SignUpPage";
 import ProductPage from "./pages/ProductPage";
 import CartPage from './pages/CartPage';
