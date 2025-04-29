@@ -1,4 +1,6 @@
-const uriAll = "http://localhost:3000/api/products/seeProduct";
+import.meta.env.VITE_API_URL
+
+const uriAll = `${import.meta.env.VITE_API_URL}/api/products/seeProduct`;
 
 export const fetchProducts = async () => {
     try {

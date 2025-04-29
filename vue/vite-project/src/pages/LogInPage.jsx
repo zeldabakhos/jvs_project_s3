@@ -4,6 +4,7 @@ import LabelComp from '../components/LabelComp';
 import InputForm from '../components/InputForm';
 import AlertComp from '../components/AlertComp';
 import { checkEmail } from '../utils/checkFormErrors';
+import.meta.env.VITE_API_URL
 
 const LogInPage = ({setIsLoggedIn}) => {
   const [email, setEmail] = useState("");
@@ -21,7 +22,7 @@ const LogInPage = ({setIsLoggedIn}) => {
       if (!checkEmail.checkEmpty(email)) throw Error("This is empty!");
       if (!checkEmail.checkFormat(email)) throw Error("Email bad !!!");
   
-      const response = await fetch("http://localhost:3000/api/users/login", {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/users/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

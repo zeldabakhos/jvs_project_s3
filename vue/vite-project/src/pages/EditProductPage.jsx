@@ -1,4 +1,5 @@
 // EditProductPage.jsx
+import.meta.env.VITE_API_URL
 
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -13,7 +14,7 @@ const EditProductPage = () => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/api/products/seeProductId/${id}`);
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/products/seeProductId/${id}`);
         const data = await response.json();
         setProduct(data);
       } catch (err) {
@@ -38,7 +39,7 @@ const EditProductPage = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch(`http://localhost:3000/api/products/updateProduct/${id}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/products/updateProduct/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

@@ -4,6 +4,7 @@ import { fetchProducts } from '../utils/fetchProducts.js';
 import CardComponent from '../components/CardComponent.jsx';
 import { Link } from 'react-router-dom';
 import './ProductPage.css';
+import.meta.env.VITE_API_URL
 
 const ProductPage = () => {
   const [products, setProducts] = useState([]);
@@ -36,7 +37,7 @@ const ProductPage = () => {
 
   const handleDelete = async (id) => {
     try {
-      const response = await fetch(`http://localhost:3000/api/products/deleteProduct/${id}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/products/deleteProduct/${id}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem("token")}`,

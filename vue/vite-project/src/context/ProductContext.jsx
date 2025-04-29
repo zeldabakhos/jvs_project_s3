@@ -1,4 +1,5 @@
 import { createContext, useState, useEffect, useContext } from "react";
+import.meta.env.VITE_API_URL
 
 export const ProductContext = createContext();
 export const useDelete = () => useContext(ProductContext);
@@ -12,7 +13,7 @@ export const ProductProvider = ({ children }) => {
 
   const fetchProducts = async () => {
     try {
-      const response = await fetch("http://localhost:3000/api/products/seeProduct");
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/products/seeProduct`);
       const data = await response.json();
       setProducts(data);
     } catch (error) {
@@ -22,7 +23,7 @@ export const ProductProvider = ({ children }) => {
 
   const deleteProduct = async (productId) => {
     try {
-      const response = await fetch(`http://localhost:3000/api/products/deleteProduct/${productId}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}//api/products/deleteProduct/${productId}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -42,7 +43,7 @@ export const ProductProvider = ({ children }) => {
 
   const editProduct = async (productId, updatedFields) => {
     try {
-      const response = await fetch(`http://localhost:3000/api/products/updateProduct/${productId}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/products/updateProduct/${productId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

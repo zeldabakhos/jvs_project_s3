@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom'; // ✅ Added Link
 import LabelComp from '../components/LabelComp';
 import InputForm from '../components/InputForm';
+import.meta.env.VITE_API_URL
 
 const fieldConfig = [
   { name: "firstName", label: "First Name", type: "text", id: "inputFirstName" },
@@ -25,7 +26,7 @@ const SignUpPage = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:3000/api/users/signup", {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/users/signup`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

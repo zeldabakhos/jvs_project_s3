@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import.meta.env.VITE_API_URL
 
 const CreateProductPage = () => {
   const [productName, setProductName] = useState('');
@@ -28,7 +29,7 @@ const CreateProductPage = () => {
     };
 
     try {
-      const response = await fetch('http://localhost:3000/api/products/addProduct', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/products/addProduct`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

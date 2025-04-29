@@ -1,9 +1,11 @@
-const uri = "http://localhost:3000/api/products/seeProductId"
+import.meta.env.VITE_API_URL
+
+const uri = `${import.meta.env.VITE_API_URL}/api/products/seeProductId`
 
 
 export const fetchProductById = async (_id) => {
     try {
-        const response = await fetch(`${uri}/${_id}`); // Dynamically append the product ID to the URL
+        const response = await fetch(`${uri}/${_id}`); 
         if (!response.ok) {
             throw new Error("Failed to fetch product details");
         }
