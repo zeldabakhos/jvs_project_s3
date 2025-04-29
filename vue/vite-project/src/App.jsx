@@ -37,8 +37,8 @@ const App = () => {
               <Route path="/signup" element={<SignUpPage />} />
               <Route path="/cart" element={<CartPage />} />
               <Route path="/editproduct/:id" element={<EditProductPage />} />
-              <Route path="/products" element={<PrivateRoute><ProductPage /></PrivateRoute>} />
-              <Route path="/createproduct" element={<PrivateRoute><CreateProduct /></PrivateRoute>} />
+              <Route path="/products" element={<PrivateRoute isLoggedIn={isLoggedIn}><ProductPage /></PrivateRoute>} />
+              <Route path="/createproduct" element={<PrivateRoute isLoggedIn={isLoggedIn}><CreateProduct /></PrivateRoute>} />
               <Route path="*" element={<NotFoundPage />} />
             </Routes>
           </main>

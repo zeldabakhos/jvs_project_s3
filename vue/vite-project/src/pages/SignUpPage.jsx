@@ -67,8 +67,9 @@ const SignUpPage = () => {
       ))}
 
       <button type="submit" className="btn btn-primary w-100 mt-3">
-        Register
+        <Link to="/login">Register</Link>
       </button>
+
 
       <div className="text-center mt-3">
         Already have an account?{" "}
